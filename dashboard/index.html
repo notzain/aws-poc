@@ -103,7 +103,6 @@
         </div>
     </div>
     <br>
-    <button id="addData">Add Data</button>
     <script>
         var color = Chart.helpers.color;
         // CHART
@@ -210,21 +209,6 @@
                                     <td>${data.uuid}</td>
                                     <td>${data.health}</td>
                                 </tr>`]);
-        });
-
-
-        document.getElementById('addData').addEventListener('click', function () {
-            if (config.data.datasets.length > 0) {
-                var month = MONTHS[config.data.labels.length % MONTHS.length];
-                config.data.labels.push(month);
-
-                config.data.datasets.forEach(function (dataset) {
-                    dataset.data.push(randomScalingFactor());
-                });
-
-                window.myLine.update();
-            }
-
         });
     </script>
 </body>
