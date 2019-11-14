@@ -68,6 +68,8 @@
         }
     </style>
 </head>
+<label for="name">Stream Name</label>
+<input type="text" id="stream" name="stream">
 
 <body class="vsc-initialized">
     <div style="width:75%;">
@@ -200,16 +202,25 @@
             window.myLine.update();
         }
 
-        KinesisPoller(kinesis, "POC_PROCENTEC", console).poll((data) => {
-            if (!(data["uuid"] in UuidToDataset)) {
-                AddDataset(data.uuid);
-            }
-            AddData(data);
-            clusterize.prepend([`<tr>
+        const StartKinesis = stream => {
+            KinesisPoller(kinesis, stream, console).poll((data) => {
+                if (!(data["uuid"] in UuidToDataset)) {
+                    AddDataset(data.uuid);
+                }
+                AddData(data);
+                clusterize.prepend([`<tr>
                                     <td>${data.uuid}</td>
                                     <td>${data.health}</td>
                                 </tr>`]);
-        });
+            });
+        }
+        var input = document.getElementById("stream");
+        stream.addEventListener("keyup", event => {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                StartKinesis(event.target.value)
+            }
+        })
     </script>
 </body>
 
